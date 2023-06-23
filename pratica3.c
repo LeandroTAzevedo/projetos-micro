@@ -15,10 +15,28 @@ sbit LCD_D4_Direction at TRISB0_bit;
 sbit LCD_D5_Direction at TRISB1_bit;
 sbit LCD_D6_Direction at TRISB2_bit;
 sbit LCD_D7_Direction at TRISB3_bit;
-
+ADC_init();
 
 
 //definicao de constantes do microcontrolador
-ADCON0 = 00000001
-ADCON1 = 00011011
+ADCON0 = 00000001;   //conversor ativado
+ADCON1 = 00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital.
 
+TRISA.RA0 = 1;  // setando os pinos an0 - an3 como entradas
+TRISA.RA1 = 1;
+TRISA.RA2 = 1;
+TRISA.RA3 = 1;
+
+
+void main(){
+  Lcd_Init();                        //Inicializa display no modo 4 bits
+  Lcd_Cmd(_LCD_CLEAR);               //Apaga display
+  Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
+  //Lcd_Out(1,1,"ADC: ");              arrumar isso!!
+
+
+
+
+
+
+}
