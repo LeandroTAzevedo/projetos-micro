@@ -32,8 +32,8 @@ void main(){
   Lcd_Init();                        //Inicializa display no modo 4 bits
   Lcd_Cmd(_LCD_CLEAR);               //Apaga display
   Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
-  //Lcd_Out(1,1,"ADC: ");              arrumar isso!!
-
+  Lcd_Out(1,1,"V: ");              arrumar isso!!
+  Lcd_Out(2,1,"Temp: ");   
 
 
 
