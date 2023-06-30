@@ -1,5 +1,22 @@
 //pratica 3 - aplicacao de microprocessadores
 
+// Configuracao inicial (pinos, entrada, saida e registradores ADC)
+TRISA.RA0 = 1; // Pino RA0 como entrada (canal analogico AN0)
+TRISE.RE1 = 1; // Pino RE1 como entrada (canal analogico AN6)
+//PORTA.RA0 = 1; // opcional
+ADCON0 = 0B00000001; // AN0 -> AD ligado, leitura deslig., canal AN0
+ADCON2 = 0B10101010; // Justificativa para direita, FOSC/32 (tempo entre 2 e 25 us)
+//... e 12 TAD (tempo de conversao de cada bit + 2 TAD)
+#ifdef P18F45K22 // Utilizando um PIC18F45k22
+ANSELA.B0 = 1; // Somente bit 0 ("B0") do PORTA sera usado (ou seja: RA0/AN0) como analogico
+ANSELB = 0; // PORTB = 0, isto e, como I/O digital,  pois nao sera usado como analogico
+ADCON1 = 0B00000000; // tensoes de ref. internas = VDD e Vss
+VREFCON0 = 0B00010000; // Vref+ interna ajustada para 1,024V
+#endif
+#ifdef P18F4550 // Utilizando um PIC18F4550
+ADCON1=0B00001110; // Tensao de ref interna, somente canal AN0 como analogico, ta diferente do q eu fiz
+#endif
+
 // pinos utilizados para comunica��o com o display LCD
 sbit LCD_RS at LATB4_bit; // pino 4 do PORTB interligado ao RS do display
 sbit LCD_EN at LATB5_bit; // pino 5 do PORTB " " ao EN do display
@@ -19,24 +36,27 @@ ADC_init();
 
 
 //definicao de constantes do microcontrolador
-ADCON0 = 00000001;   //conversor ativado
-ADCON1 = 00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital.
+ADCON1 = 00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital. Ta diferente do q vc fez pedro
 
-TRISA.RA0 = 1;  // setando os pinos an0 - an3 como entradas
+TRISA.RA0 = 1;  // setando os pinos an0 - an3 como entradas, repetido
 TRISA.RA1 = 1;
 TRISA.RA2 = 1;
 TRISA.RA3 = 1;
 
 
 void main(){
+  unsigned int Leitura_ADC; // Variavel de leitura ADC
+  unsigned char Texto[10]; // Display LCD - tipo char - int 8 bits
   Lcd_Init();                        //Inicializa display no modo 4 bits
   Lcd_Cmd(_LCD_CLEAR);               //Apaga display
   Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
-  Lcd_Out(1,1,"V: ");              arrumar isso!!
+  Lcd_Out(1,1,"V: ");
   Lcd_Out(2,1,"Temp: ");   
-
-
-
-
-
-}
+  while(1) {
+  ADCON.GO_DONE = 1; // Liga a leitura e inicia a conversao do ADC
+  while(ADCON.GO_DONE == 1); // Aguarda o fim do periodo de conversao
+  Leitura_ADC = ((ADRESH << 8)|ADRESL);
+  WordToStr(Leitura_ADC, Texto); // Conversao, isso aqui vai ter q mudar, é um comando q o professor criou
+  Delay_ms(20); // Delay para permitir a atualizacao do LCD
+ } // Fim de "while(1)"
+} // Fim de "void main()"
