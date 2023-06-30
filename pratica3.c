@@ -55,11 +55,13 @@ void main(){
   Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
   Lcd_Out(1,1,"V: ");
   Lcd_Out(2,1,"Temp: ");   
-  while(1) {
+  Va = ADC_Read(0)
+  while(1) {  //acho q n precisa de nd disso, pelo q pesquisei
   ADCON.GO_DONE = 1; // Liga a leitura e inicia a conversao do ADC
-  while(ADCON.GO_DONE == 1); // Aguarda o fim do periodo de conversao
-  Leitura_ADC = ((ADRESH << 8)|ADRESL);
-  WordToStr(Leitura_ADC, Texto); // Conversao, isso aqui vai ter q mudar, é um comando q o professor criou
+
+  while(ADCON.GO_DONE == 1); // Aguarda o fim do periodo de conversao, quando a conversao terminar, go_done = 0
+//  Leitura_ADC = ((ADRESH << 8)|ADRESL);
+//  WordToStr(Leitura_ADC, Texto); // Conversao, isso aqui vai ter q mudar, é um comando q o professor criou
   Delay_ms(20); // Delay para permitir a atualizacao do LCD
  } // Fim de "while(1)"
 } // Fim de "void main()"
