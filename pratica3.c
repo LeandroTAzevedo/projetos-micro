@@ -12,6 +12,8 @@ ANSELA.B0 = 1; // Somente bit 0 ("B0") do PORTA sera usado (ou seja: RA0/AN0) co
 ANSELB = 0; // PORTB = 0, isto e, como I/O digital,  pois nao sera usado como analogico
 ADCON1 = 0B00000000; // tensoes de ref. internas = VDD e Vss
 VREFCON0 = 0B00010000; // Vref+ interna ajustada para 1,024V
+TRISA.RA2 = 1
+TRISA.RA3 = 1
 #endif
 #ifdef P18F4550 // Utilizando um PIC18F4550
 ADCON1=0B00001110; // Tensao de ref interna, somente canal AN0 como analogico, ta diferente do q eu fiz
