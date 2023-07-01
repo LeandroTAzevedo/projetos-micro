@@ -1,5 +1,23 @@
 //pratica 3 - aplicacao de microprocessadores
 
+// pinos utilizados para comunica��o com o display LCD
+sbit LCD_RS at LATB4_bit; // pino 4 do PORTB interligado ao RS do display
+sbit LCD_EN at LATB5_bit; // pino 5 do PORTB " " ao EN do display
+sbit LCD_D4 at LATB0_bit; // pino 0 do PORTB ao D4
+sbit LCD_D5 at LATB1_bit;  // " "
+sbit LCD_D6 at LATB2_bit;  // " "
+sbit LCD_D7 at LATB3_bit;  // " "
+
+// dire��o do fluxo de dados nos pinos selecionados
+sbit LCD_RS_Direction at TRISB4_bit;  // dire��o do fluxo de dados do pino RB4
+sbit LCD_EN_Direction at TRISB5_bit;  // " "
+sbit LCD_D4_Direction at TRISB0_bit;
+sbit LCD_D5_Direction at TRISB1_bit;
+sbit LCD_D6_Direction at TRISB2_bit;
+sbit LCD_D7_Direction at TRISB3_bit;
+
+
+void main(){
 // Configuracao inicial (pinos, entrada, saida e registradores ADC)
 TRISA.RA0 = 1; // Pino RA0 como entrada (canal analogico AN0)
 TRISE.RE1 = 1; // Pino RE1 como entrada (canal analogico AN6)
@@ -20,21 +38,7 @@ TRISA.RA3 = 1;
 ADCON1=0B00001110; // Tensao de ref interna, somente canal AN0 como analogico, ta diferente do q eu fiz
 #endif
 
-// pinos utilizados para comunica��o com o display LCD
-sbit LCD_RS at LATB4_bit; // pino 4 do PORTB interligado ao RS do display
-sbit LCD_EN at LATB5_bit; // pino 5 do PORTB " " ao EN do display
-sbit LCD_D4 at LATB0_bit; // pino 0 do PORTB ao D4
-sbit LCD_D5 at LATB1_bit;  // " "
-sbit LCD_D6 at LATB2_bit;  // " "
-sbit LCD_D7 at LATB3_bit;  // " "
 
-// dire��o do fluxo de dados nos pinos selecionados
-sbit LCD_RS_Direction at TRISB4_bit;  // dire��o do fluxo de dados do pino RB4
-sbit LCD_EN_Direction at TRISB5_bit;  // " "
-sbit LCD_D4_Direction at TRISB0_bit;
-sbit LCD_D5_Direction at TRISB1_bit;
-sbit LCD_D6_Direction at TRISB2_bit;
-sbit LCD_D7_Direction at TRISB3_bit;
 ADC_init();
 
 
@@ -47,7 +51,6 @@ TRISA.RA2 = 1;
 TRISA.RA3 = 1;
 
 
-void main(){
   unsigned int Leitura_ADC; // Variavel de leitura ADC
   unsigned char Texto[10]; // Display LCD - tipo char - int 8 bits
   Lcd_Init();                        //Inicializa display no modo 4 bits
@@ -55,13 +58,16 @@ void main(){
   Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
   Lcd_Out(1,1,"V: ");
   Lcd_Out(2,1,"Temp: ");   
-  Va = ADC_Read(0)
-  while(1) {  //acho q n precisa de nd disso, pelo q pesquisei
-  ADCON.GO_DONE = 1; // Liga a leitura e inicia a conversao do ADC
 
-  while(ADCON.GO_DONE == 1); // Aguarda o fim do periodo de conversao, quando a conversao terminar, go_done = 0
-//  Leitura_ADC = ((ADRESH << 8)|ADRESL);
-//  WordToStr(Leitura_ADC, Texto); // Conversao, isso aqui vai ter q mudar, é um comando q o professor criou
+  while (1){
+  Va = ADC_Read(0);
   Delay_ms(20); // Delay para permitir a atualizacao do LCD
- } // Fim de "while(1)"
+  Tensao[0] = (Va/1000) + '0';
+  Tensao[1] = (Va/100)%10 + '0';
+  Tensao[2] = '.';
+  Tensao[3] = (Va/10)%10 + '0'; 
+  Tensao[4] = (Va/1)%10 + '0';
+  Tensao[5] = 0;
+
+  }
 } // Fim de "void main()"
