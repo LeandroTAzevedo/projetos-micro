@@ -55,24 +55,28 @@ ADC_init();
 
 Lcd_Init();                        //Inicializa display no modo 4 bits
 Lcd_Cmd(_LCD_CLEAR);               //Apaga display
-Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
-Lcd_Out(1,6,"V");
-Lcd_Out(2,7,"   C     ");
+Lcd_Cmd(_LCD_CURSOR_OFF);
+
+//Lcd_Out(1,6,"    V       ");
+//Lcd_Out(2,7,"    C       ");
 
 while(1){
+  //LCD_CMD(_LCD_SECOND_ROW);     //testes com cursor
   Va = ADC_Read(0);
   Va = Va * (Vmax/1023.);
-  Tensao[0] = (Va/1000) + '0';
-  Tensao[1] = (Va/100)%10 + '0';
-  Tensao[2] = '.';
-  Tensao[3] = (Va/10)%10 + '0';
-  Tensao[4] = (Va/1)%10 + '0';
+  Tensao[0] = (Va/100)%10 + '0';
+  Tensao[1] = '.';
+  Tensao[2] = (Va/10)%10 + '0';
+  Tensao[3] = (Va/1)%10 + '0';
+  //Lcd_Out_Cp(Tensao);     //testes com cursor
+  //Lcd_Out_Cp("V");
   Lcd_Out(1,1,Tensao); // Mostra os valores no display
   Delay_ms(20); // Delay para permitir a atualizacao do LCD
 
 
 //temp:
 
+//Lcd_Cmd(_LCD_first_ROW);
 Ta = ADC_Read(1);
 Ta = Ta * (Tmax/1023.);
 Temp[0] = (Ta/100)%10 + '0';
@@ -80,7 +84,10 @@ Temp[1] = (Ta/10)%10 + '0';
 Temp[2] = '.';
 Temp[3] = (Ta)%10 + '0';
 Temp[4] = 0;
+//Lcd_Out_Cp(Temp);     //testes com cursor
+//Lcd_Out_Cp("C");
 Lcd_Out(2,1, Temp);
 Delay_ms(20);
+//Lcd_Cmd(_LCD_CLEAR);
   }
 } // Fim de "void main()"
