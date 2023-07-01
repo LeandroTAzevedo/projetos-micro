@@ -18,6 +18,8 @@ sbit LCD_D7_Direction at TRISB3_bit;
 
 char Tensao[10]; // Display LCD - tipo char - int 8 bits
 int Va;
+int Vmax = 500;
+int Tmax = 999;
 
 void main(){
 
@@ -27,8 +29,7 @@ TRISE.RE1 = 1; // Pino RE1 como entrada (canal analogico AN6)
 //PORTA.RA0 = 1; // opcional
 ADCON0 = 0B00000001; // AN0 -> AD ligado, leitura deslig., canal AN0
 ADCON2 = 0B10101010; // Justificativa para direita, FOSC/32 (tempo entre 2 e 25 us)
-int Vmax = 500;
-int Tmax = 999;
+
 //... e 12 TAD (tempo de conversao de cada bit + 2 TAD)
 #ifdef P18F45K22 // Utilizando um PIC18F45k22
 ANSELA.B0 = 1; // Somente bit 0 ("B0") do PORTA sera usado (ou seja: RA0/AN0) como analogico
@@ -55,7 +56,7 @@ Lcd_Init();                        //Inicializa display no modo 4 bits
 Lcd_Cmd(_LCD_CLEAR);               //Apaga display
 Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
 Lcd_Out(1,6,"V: ");
-Lcd_Out(2,6,"Temp: ");
+//Lcd_Out(2,6,"Temp: ");
 
 while(1){
   Va = ADC_Read(0);
