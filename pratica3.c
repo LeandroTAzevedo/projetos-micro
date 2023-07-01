@@ -42,7 +42,7 @@ TRISA.RA3 = 1;
 #endif
 
 #ifdef P18F4550 // Utilizando um PIC18F4550
-ADCON1 = 00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital. Ta diferente do q vc fez pedro
+ADCON1 = 0B00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital. Ta diferente do q vc fez pedro
 TRISA.RA1 = 1;
 TRISA.RA2 = 1;
 TRISA.RA3 = 1;
@@ -56,8 +56,8 @@ ADC_init();
 Lcd_Init();                        //Inicializa display no modo 4 bits
 Lcd_Cmd(_LCD_CLEAR);               //Apaga display
 Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
-Lcd_Out(1,1,"V:      ");
-Lcd_Out(2,1,"Temp:      ");
+Lcd_Out(1,6,"V");
+Lcd_Out(2,7,"C");
 
 while(1){
   Va = ADC_Read(0);
@@ -66,8 +66,9 @@ while(1){
   Tensao[1] = (Va/100)%10 + '0';
   Tensao[2] = '.';
   Tensao[3] = (Va/10)%10 + '0';
-  Tensao[4] = (Va/1)%10 + '0';
-  Lcd_Out(1,6,Tensao); // Mostra os valores no display
+  Tensao[4] = (Va)%10 + '0';
+  Tensao[5] = 0;
+  Lcd_Out(1,1,Tensao); // Mostra os valores no display
   Delay_ms(20); // Delay para permitir a atualizacao do LCD
 
 
@@ -75,11 +76,12 @@ while(1){
 
 Ta = ADC_Read(1);
 Ta = Ta * (Tmax/1023.);
-Temp[0] = (Va/1000) + '0'; 
-Temp[1] = (Va/100)%10 + '0';
-Temp[2] = (Va/10)%10 + '0';
-Temp[3] = (Va/1)%10 + '0';
-Lcd_Out(2,6,Temp);
+Temp[0] = (Ta/100)%10 + '0';
+Temp[1] = (Ta/10)%10 + '0';
+Temp[2] = '.';
+Temp[3] = (Ta)%10 + '0';
+Temp[4] = 0;
+Lcd_Out(2,1, Temp);
 Delay_ms(20);
   }
 } // Fim de "void main()"
