@@ -59,7 +59,7 @@ Lcd_Out(2,6,"Temp: ");
 
 while(1){
   Va = ADC_Read(0);
-  Delay_ms(20); // Delay para permitir a atualizacao do LCD
+  Va = Valor_ADC * (Vmax/1023.)
   Tensao[0] = (Va/1000) + '0';
   Tensao[1] = (Va/100)%10 + '0';
   Tensao[2] = '.';
@@ -67,5 +67,6 @@ while(1){
   Tensao[4] = (Va/1)%10 + '0';
   Tensao[5] = 0;
   Lcd_Out(1,6,Tensao); // Mostra os valores no display
+  Delay_ms(20); // Delay para permitir a atualizacao do LCD
   }
 } // Fim de "void main()"
