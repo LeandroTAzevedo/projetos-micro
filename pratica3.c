@@ -16,8 +16,8 @@ sbit LCD_D5_Direction at TRISB1_bit;
 sbit LCD_D6_Direction at TRISB2_bit;
 sbit LCD_D7_Direction at TRISB3_bit;
 
-char Tensao[10]; // Display LCD - tipo char - int 8 bits
-char Temp[10];
+char Tensao[6]; // Display LCD - tipo char - int 8 bits
+char Temp[8];    // mudar isso dps
 int Va;
 int Ta;
 int Vmax = 500;
@@ -27,7 +27,7 @@ void main(){
 
 // Configuracao inicial (pinos, entrada, saida e registradores ADC)
 TRISA.RA0 = 1; // Pino RA0 como entrada (canal analogico AN0)
-TRISE.RE1 = 1; // Pino RE1 como entrada (canal analogico AN6)
+TRISE.RE1 = 0; // Pino RE1 como entrada (canal analogico AN6)
 //PORTA.RA0 = 1; // opcional
 ADCON0 = 0B00000001; // AN0 -> AD ligado, leitura deslig., canal AN0
 ADCON2 = 0B10101010; // Justificativa para direita, FOSC/32 (tempo entre 2 e 25 us)
@@ -42,7 +42,7 @@ TRISA.RA3 = 1;
 #endif
 
 #ifdef P18F4550 // Utilizando um PIC18F4550
-ADCON1 = 0B00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital. Ta diferente do q vc fez pedro
+ADCON1 = 00011011;   //ref+ = an3, vref- = 0, an0 - an3 = analogico, resto digital.
 TRISA.RA1 = 1;
 TRISA.RA2 = 1;
 TRISA.RA3 = 1;
@@ -57,7 +57,7 @@ Lcd_Init();                        //Inicializa display no modo 4 bits
 Lcd_Cmd(_LCD_CLEAR);               //Apaga display
 Lcd_Cmd(_LCD_CURSOR_OFF);          //Desliga cursor
 Lcd_Out(1,6,"V");
-Lcd_Out(2,7,"C");
+Lcd_Out(2,7,"   C     ");
 
 while(1){
   Va = ADC_Read(0);
@@ -66,8 +66,7 @@ while(1){
   Tensao[1] = (Va/100)%10 + '0';
   Tensao[2] = '.';
   Tensao[3] = (Va/10)%10 + '0';
-  Tensao[4] = (Va)%10 + '0';
-  Tensao[5] = 0;
+  Tensao[4] = (Va/1)%10 + '0';
   Lcd_Out(1,1,Tensao); // Mostra os valores no display
   Delay_ms(20); // Delay para permitir a atualizacao do LCD
 
