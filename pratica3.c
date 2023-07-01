@@ -27,8 +27,8 @@ TRISE.RE1 = 1; // Pino RE1 como entrada (canal analogico AN6)
 //PORTA.RA0 = 1; // opcional
 ADCON0 = 0B00000001; // AN0 -> AD ligado, leitura deslig., canal AN0
 ADCON2 = 0B10101010; // Justificativa para direita, FOSC/32 (tempo entre 2 e 25 us)
-int Vmax = 500
-int Tmax = 999
+int Vmax = 500;
+int Tmax = 999;
 //... e 12 TAD (tempo de conversao de cada bit + 2 TAD)
 #ifdef P18F45K22 // Utilizando um PIC18F45k22
 ANSELA.B0 = 1; // Somente bit 0 ("B0") do PORTA sera usado (ou seja: RA0/AN0) como analogico
@@ -59,7 +59,7 @@ Lcd_Out(2,6,"Temp: ");
 
 while(1){
   Va = ADC_Read(0);
-  Va = Valor_ADC * (Vmax/1023.)
+  Va = Va * (Vmax/1023.);
   Tensao[0] = (Va/1000) + '0';
   Tensao[1] = (Va/100)%10 + '0';
   Tensao[2] = '.';
