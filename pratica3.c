@@ -67,8 +67,8 @@ void main() {
   Ta = ADC_Read(6);                 //Leitura da entrada analogica 6
   Ta = Ta * (Tmax/1023.);           //Modulacao da entrada analogica nos intervalos desejados
   Temp[0] = (Ta/100)%10 + '0';      //Separacao do valor encontrado para transformar em uma string que
-  Temp[1] = (Ta/10)%10 + '0';
-  Temp[2] = '.';                    //... possa ser exposta no display
+  Temp[1] = (Ta/10)%10 + '0';       //... possa ser exposta no display
+  Temp[2] = '.';                    
   Temp[3] = (Ta)%10 + '0';
   Temp[4] = 0;
   Lcd_Out(2,9,Temp);                // Apresenta o valor da temperatura na linha 2 e coluna 9 do display LCD
